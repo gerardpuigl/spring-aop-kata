@@ -52,6 +52,7 @@ public class AspectTest {
         contractService.disabledMethod();
 
         verify(enabledAspect, times(1)).beforeDisabledMethod(any());
+        verify(enabledAspect, times(1)).beforeDisabledMethod();
         verify(contractService, never()).disabledMethod();
     }
 
