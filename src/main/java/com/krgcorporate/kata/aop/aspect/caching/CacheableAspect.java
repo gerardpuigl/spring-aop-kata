@@ -15,13 +15,13 @@ public class CacheableAspect {
 
     @Around("execution(public * *..*Repository.findBy*(..)) && args(reference)")
     public Object checkCacheBeforeCalling(ProceedingJoinPoint pjp, String reference) throws Throwable {
-
         log.info("Simulating cache reading {}", reference);
         if(reference.equals("CACHED_REFERENCE")){
             log.info("Simulating returning cached object {}", reference);
             return Optional.of(new Contract("CACHED_REFERENCE"));
         }
 
+        log.info("Simulating search database {}", reference);
         Object retVal = pjp.proceed();
         log.info("Simulating cache insertion {}", reference);
         return retVal;
