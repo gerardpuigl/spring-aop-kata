@@ -8,6 +8,7 @@ import org.aspectj.lang.annotation.Aspect;
 @Aspect
 public class CacheableAspect {
 
+    @AfterReturning(value = "execution(public * *..*Repository.findBy*(..))", returning = "result")
     public void cacheAfterReturning(Object result) {
         log.info("Simulating cache insertion {}", result);
     }
