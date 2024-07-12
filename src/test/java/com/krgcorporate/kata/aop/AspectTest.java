@@ -1,7 +1,7 @@
 package com.krgcorporate.kata.aop;
 
-import com.krgcorporate.kata.aop.aspect.activation.DisabledException;
 import com.krgcorporate.kata.aop.aspect.activation.DisabledAspect;
+import com.krgcorporate.kata.aop.aspect.activation.DisabledException;
 import com.krgcorporate.kata.aop.aspect.caching.CacheableAspect;
 import com.krgcorporate.kata.aop.aspect.logging.LoggingAspect;
 import com.krgcorporate.kata.aop.aspect.profiling.ProfiledAspect;
@@ -16,9 +16,7 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -99,7 +97,7 @@ public class AspectTest {
 
     /**
      * Configure the com.krgcorporate.kata.aop.aspect.caching.CacheableAspect
-     *  in order to evict the result of find method in beans suffixed by 'Repository'.
+     *  in order to evict the result of save method in beans suffixed by 'Repository'.
      */
     @Test
     public void repositorySaveMethodShouldEvictTheCache() {
