@@ -15,6 +15,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -110,14 +113,19 @@ public class AspectTest {
      *  in order to cache the result of any findBy methods in beans suffixed by 'Repository'.
      */
     @Test
-    public void repositoryFindMethodShouldBeCached() {
-        contractRepository.findByReference("ANY_REF");
-        verify(cacheableAspect, times(1)).cacheAfterReturning(any());
+    public void repositoryFindMethodShouldBeCached() throws Throwable {
+        Optional<Contract> existingReference = contractRepository.findByReference("CACHED_REFERENCE");
+        assertTrue(existingReference.isPresent());
+
+        Optional<Contract> nonExistingReference = contractRepository.findByReference("NON_EXISTING_REFERENCE");
+        assertTrue(nonExistingReference.isEmpty());
+
+        verify(cacheableAspect, times(2)).checkCacheBeforeCalling(any(),any());
     }
 
     @Test
-    public void repositoryFindAllMethodShouldNotBeCached() {
+    public void repositoryFindAllMethodShouldNotBeCached() throws Throwable {
         contractRepository.findAll();
-        verify(cacheableAspect, never()).cacheAfterReturning(any());
+        verify(cacheableAspect, never()).checkCacheBeforeCalling(any(),any());
     }
 }
